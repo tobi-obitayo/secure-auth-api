@@ -88,13 +88,13 @@ def check_rate_limit(ip: str):
     # Drop failures that fell outside the 60-second window
     while attempts and now - attempts[0] > WINDOW_SECONDS:
         attempts.popleft()
-        if len(attempts) >= MAX_FAILED_ATTEMPTS:
-            retry_after = int(WINDOW_SECONDS - (now - attempts[0])) + 1
-            raise HTTPException(
-                status_code=429,
-                detail="Too many failed login attempts. Try again later.",
-                headers={"Retry-After": str(retry_after)},
-            )
+    if len(attempts) >= MAX_FAILED_ATTEMPTS:
+        retry_after = int(WINDOW_SECONDS - (now - attempts[0])) + 1
+        raise HTTPException(
+            status_code=429,
+            detail="Too many failed login attempts. Try again later.",
+            headers={"Retry-After": str(retry_after)},
+        )
        
 def record_failure(ip: str):
     failed_attempts[ip].append(time.time())
