@@ -2,3 +2,8 @@ venv/
 __pycache__/
 *.db
 .env
+
+.pytest_cache/
+*.db
+.env
+.DS_Store
